@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/php:1-8.3-bullseye
+    volumes:
+      - ..:/workspaces/${LOCAL_WORKSPACE_FOLDER_BASENAME}
+    command: sleep infinity
+    depends_on:
+      - postgres
+    networks: [dev]
+
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: petstar
+      POSTGRES_PASSWORD: petstar
+      POSTGRES_DB: petstar_dev
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [dev]
+    ports:
+      - "5432:5432"
+
+networks:
+  dev:
+
+volumes:
+  pgdata:
